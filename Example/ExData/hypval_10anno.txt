@@ -1,0 +1,3 @@
+#hyper_parameter
+a	-12,0,0,0,0,0,0,0,0,0,0
+tau_beta	0.1
