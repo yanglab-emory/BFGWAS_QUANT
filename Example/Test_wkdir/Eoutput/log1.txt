@@ -1,0 +1,104 @@
+##
+## Software Version = BFGWAS_QUANT
+##
+## Command Line Input = -inputSS -Zscore /projects/YangLabData/Software/BFGWAS_QUANT/Example/ExData/Zscore/WGS_1898_samples_CHR_19_13471127_14486347.Zscore.txt.gz -LDcorr /projects/YangLabData/Software/BFGWAS_QUANT/Example/ExData/RefLD/WGS_1898_samples_CHR_19_13471127_14486347.LDcorr.txt.gz -a /projects/YangLabData/Software/BFGWAS_QUANT/Example/ExData/Anno/Anno_WGS_1898_samples_CHR_19_13471127_14486347.txt.gz -hfile /projects/YangLabData/Software/BFGWAS_QUANT/Example/Test_wkdir/hypval.current -n 1893 -maf 0.01 -bvsrm -smin 0 -smax 5 -win 100 -o WGS_1898_samples_CHR_19_13471127_14486347 -w 10000 -s 10000 -AnnoNumber 4 -seed 2022 
+##
+## Date = Tue Aug  2 15:29:15 2022
+
+##
+## Sample Sizes and Test SNP Numbers :
+## number_of_total_individuals = 1893
+## number_of_analyzed_individuals = 1893
+## number_of_total_SNPs = 3777
+## number_of_analyzed_SNPs = 3776
+## Phenotype_var = 1
+##
+## MCMC related:
+## initial value of |gamma| = 1
+## random seed = 2022
+## acceptance ratio = 0.06575
+## Region_PIP = 0.9997
+##
+## Total computation time = 0.0538205 min 
+## Accept add iterations =230, total add step = 6671
+## Accept delete iterations =230, total delete step = 6867
+## Accept switch iterations =855, total switch step = 6462
+##
+##
+## Software Version = BFGWAS_QUANT
+##
+## Command Line Input = -inputSS -Zscore /projects/YangLabData/Software/BFGWAS_QUANT/Example/ExData/Zscore/WGS_1898_samples_CHR_19_23467746_28557893.Zscore.txt.gz -LDcorr /projects/YangLabData/Software/BFGWAS_QUANT/Example/ExData/RefLD/WGS_1898_samples_CHR_19_23467746_28557893.LDcorr.txt.gz -a /projects/YangLabData/Software/BFGWAS_QUANT/Example/ExData/Anno/Anno_WGS_1898_samples_CHR_19_23467746_28557893.txt.gz -hfile /projects/YangLabData/Software/BFGWAS_QUANT/Example/Test_wkdir/hypval.current -n 1893 -maf 0.01 -bvsrm -smin 0 -smax 5 -win 100 -o WGS_1898_samples_CHR_19_23467746_28557893 -w 10000 -s 10000 -AnnoNumber 4 -seed 2022 
+##
+## Date = Tue Aug  2 15:29:35 2022
+
+##
+## Sample Sizes and Test SNP Numbers :
+## number_of_total_individuals = 1893
+## number_of_analyzed_individuals = 1893
+## number_of_total_SNPs = 11640
+## number_of_analyzed_SNPs = 11639
+## Phenotype_var = 1
+##
+## MCMC related:
+## initial value of |gamma| = 2
+## random seed = 2022
+## acceptance ratio = 0.1289
+## Region_PIP = 1
+##
+## Total computation time = 0.376113 min 
+## Accept add iterations =953, total add step = 5839
+## Accept delete iterations =950, total delete step = 7154
+## Accept switch iterations =675, total switch step = 7007
+##
+##
+## Software Version = BFGWAS_QUANT
+##
+## Command Line Input = -inputSS -Zscore /projects/YangLabData/Software/BFGWAS_QUANT/Example/ExData/Zscore/WGS_1898_samples_CHR_19_28557893_29790947.Zscore.txt.gz -LDcorr /projects/YangLabData/Software/BFGWAS_QUANT/Example/ExData/RefLD/WGS_1898_samples_CHR_19_28557893_29790947.LDcorr.txt.gz -a /projects/YangLabData/Software/BFGWAS_QUANT/Example/ExData/Anno/Anno_WGS_1898_samples_CHR_19_28557893_29790947.txt.gz -hfile /projects/YangLabData/Software/BFGWAS_QUANT/Example/Test_wkdir/hypval.current -n 1893 -maf 0.01 -bvsrm -smin 0 -smax 5 -win 100 -o WGS_1898_samples_CHR_19_28557893_29790947 -w 10000 -s 10000 -AnnoNumber 4 -seed 2022 
+##
+## Date = Tue Aug  2 15:29:20 2022
+
+##
+## Sample Sizes and Test SNP Numbers :
+## number_of_total_individuals = 1893
+## number_of_analyzed_individuals = 1893
+## number_of_total_SNPs = 5921
+## number_of_analyzed_SNPs = 5921
+## Phenotype_var = 1
+##
+## MCMC related:
+## initial value of |gamma| = 1
+## random seed = 2022
+## acceptance ratio = 0.025
+## Region_PIP = 0.9272
+##
+## Total computation time = 0.122982 min 
+## Accept add iterations =140, total add step = 7634
+## Accept delete iterations =141, total delete step = 6286
+## Accept switch iterations =219, total switch step = 6080
+##
+##
+## Software Version = BFGWAS_QUANT
+##
+## Command Line Input = -inputSS -Zscore /projects/YangLabData/Software/BFGWAS_QUANT/Example/ExData/Zscore/WGS_1898_samples_CHR_19_29790947_30727954.Zscore.txt.gz -LDcorr /projects/YangLabData/Software/BFGWAS_QUANT/Example/ExData/RefLD/WGS_1898_samples_CHR_19_29790947_30727954.LDcorr.txt.gz -a /projects/YangLabData/Software/BFGWAS_QUANT/Example/ExData/Anno/Anno_WGS_1898_samples_CHR_19_29790947_30727954.txt.gz -hfile /projects/YangLabData/Software/BFGWAS_QUANT/Example/Test_wkdir/hypval.current -n 1893 -maf 0.01 -bvsrm -smin 0 -smax 5 -win 100 -o WGS_1898_samples_CHR_19_29790947_30727954 -w 10000 -s 10000 -AnnoNumber 4 -seed 2022 
+##
+## Date = Tue Aug  2 15:29:16 2022
+
+##
+## Sample Sizes and Test SNP Numbers :
+## number_of_total_individuals = 1893
+## number_of_analyzed_individuals = 1893
+## number_of_total_SNPs = 3960
+## number_of_analyzed_SNPs = 3959
+## Phenotype_var = 1
+##
+## MCMC related:
+## initial value of |gamma| = 1
+## random seed = 2022
+## acceptance ratio = 0.0118
+## Region_PIP = 0.0188
+##
+## Total computation time = 0.0555065 min 
+## Accept add iterations =103, total add step = 19784
+## Accept delete iterations =104, total delete step = 104
+## Accept switch iterations =29, total switch step = 112
+##

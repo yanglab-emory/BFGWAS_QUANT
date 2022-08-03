@@ -1,0 +1,157 @@
+[1] "LC_CTYPE=C;LC_NUMERIC=C;LC_TIME=C;LC_COLLATE=C;LC_MONETARY=C;LC_MESSAGES=en_US.UTF-8;LC_PAPER=en_US.UTF-8;LC_NAME=C;LC_ADDRESS=C;LC_TELEPHONE=C;LC_MEASUREMENT=en_US.UTF-8;LC_IDENTIFICATION=C"
+-- Attaching packages --------------------------------------- tidyverse 1.3.1 --
+v ggplot2 3.3.3     v purrr   0.3.4
+v tibble  3.1.1     v dplyr   1.0.5
+v tidyr   1.1.3     v stringr 1.4.0
+v readr   1.4.0     v forcats 0.5.1
+-- Conflicts ------------------------------------------ tidyverse_conflicts() --
+x dplyr::between()   masks data.table::between()
+x dplyr::filter()    masks stats::filter()
+x dplyr::first()     masks data.table::first()
+x dplyr::lag()       masks stats::lag()
+x dplyr::last()      masks data.table::last()
+x purrr::transpose() masks data.table::transpose()
+[1] "hyper parameter values before MCMC: "
+        V1          V2
+1        a -12,0,0,0,0
+2 tau_beta           1
+[1] 25295     5
+[1] "Solve for a_vector: "
+          p1       p2       p3        p4        p5    value fevals gevals niter
+L-BFGS-B -10 1.334606 1.655551 0.1009613 0.7363873 105.0187     11     11    NA
+         convcode  kkt1 kkt2 xtime
+L-BFGS-B        0 FALSE TRUE 0.037
+[1] "Fix tau_beta: " "1"             
+[1] "hyper parameter values updates after MCMC: "
+   #hyper_parameter
+1:                a
+2:         tau_beta
+                                                                       value
+1: -10,1.33460601807974,1.65555075249653,0.100961326282473,0.736387334601672
+2:                                                                         1
+[1] "Sum PIP =  5.7531"
+[1] "Regression R2 =  0.085101243"
+[1] "Posterior log likelihood =  54.73272"
+[1] "EM step time cost (in minutes) : "
+       user      system     elapsed 
+0.049883333 0.001416667 0.051783333 
+[1] "LC_CTYPE=C;LC_NUMERIC=C;LC_TIME=C;LC_COLLATE=C;LC_MONETARY=C;LC_MESSAGES=en_US.UTF-8;LC_PAPER=en_US.UTF-8;LC_NAME=C;LC_ADDRESS=C;LC_TELEPHONE=C;LC_MEASUREMENT=en_US.UTF-8;LC_IDENTIFICATION=C"
+-- Attaching packages --------------------------------------- tidyverse 1.3.1 --
+v ggplot2 3.3.3     v purrr   0.3.4
+v tibble  3.1.1     v dplyr   1.0.5
+v tidyr   1.1.3     v stringr 1.4.0
+v readr   1.4.0     v forcats 0.5.1
+-- Conflicts ------------------------------------------ tidyverse_conflicts() --
+x dplyr::between()   masks data.table::between()
+x dplyr::filter()    masks stats::filter()
+x dplyr::first()     masks data.table::first()
+x dplyr::lag()       masks stats::lag()
+x dplyr::last()      masks data.table::last()
+x purrr::transpose() masks data.table::transpose()
+[1] "hyper parameter values before MCMC: "
+        V1
+1        a
+2 tau_beta
+                                                                         V2
+1 -10,1.33460601807974,1.65555075249653,0.100961326282473,0.736387334601672
+2                                                                         1
+[1] 25295     5
+[1] "Solve for a_vector: "
+          p1       p2       p3        p4        p5    value fevals gevals niter
+L-BFGS-B -10 1.883722 2.071296 0.1809746 0.9819646 101.1516      9      9    NA
+         convcode  kkt1 kkt2 xtime
+L-BFGS-B        0 FALSE TRUE 0.028
+[1] "Fix tau_beta: " "1"             
+[1] "hyper parameter values updates after MCMC: "
+   #hyper_parameter
+1:                a
+2:         tau_beta
+                                                                       value
+1: -10,1.88372193402145,2.07129642317931,0.180974589796826,0.981964624728428
+2:                                                                         1
+[1] "Sum PIP =  5.8068"
+[1] "Regression R2 =  0.086574601"
+[1] "Posterior log likelihood =  62.82352"
+[1] "EM step time cost (in minutes) : "
+       user      system     elapsed 
+0.050633333 0.001466667 0.052583333 
+[1] "LC_CTYPE=C;LC_NUMERIC=C;LC_TIME=C;LC_COLLATE=C;LC_MONETARY=C;LC_MESSAGES=en_US.UTF-8;LC_PAPER=en_US.UTF-8;LC_NAME=C;LC_ADDRESS=C;LC_TELEPHONE=C;LC_MEASUREMENT=en_US.UTF-8;LC_IDENTIFICATION=C"
+-- Attaching packages --------------------------------------- tidyverse 1.3.1 --
+v ggplot2 3.3.3     v purrr   0.3.4
+v tibble  3.1.1     v dplyr   1.0.5
+v tidyr   1.1.3     v stringr 1.4.0
+v readr   1.4.0     v forcats 0.5.1
+-- Conflicts ------------------------------------------ tidyverse_conflicts() --
+x dplyr::between()   masks data.table::between()
+x dplyr::filter()    masks stats::filter()
+x dplyr::first()     masks data.table::first()
+x dplyr::lag()       masks stats::lag()
+x dplyr::last()      masks data.table::last()
+x purrr::transpose() masks data.table::transpose()
+[1] "hyper parameter values before MCMC: "
+        V1
+1        a
+2 tau_beta
+                                                                         V2
+1 -10,1.88372193402145,2.07129642317931,0.180974589796826,0.981964624728428
+2                                                                         1
+[1] 25295     5
+[1] "Solve for a_vector: "
+          p1       p2      p3        p4        p5    value fevals gevals niter
+L-BFGS-B -10 2.021394 2.14898 0.1986798 0.9653735 100.6395      9      9    NA
+         convcode  kkt1 kkt2 xtime
+L-BFGS-B        0 FALSE TRUE 0.027
+[1] "Fix tau_beta: " "1"             
+[1] "hyper parameter values updates after MCMC: "
+   #hyper_parameter
+1:                a
+2:         tau_beta
+                                                                       value
+1: -10,2.02139409667856,2.14898048353713,0.198679779648737,0.965373508293106
+2:                                                                         1
+[1] "Sum PIP =  5.8456"
+[1] "Regression R2 =  0.086106574"
+[1] "Posterior log likelihood =  65.12897"
+[1] "EM step time cost (in minutes) : "
+       user      system     elapsed 
+0.050383333 0.001316667 0.052050000 
+[1] "LC_CTYPE=C;LC_NUMERIC=C;LC_TIME=C;LC_COLLATE=C;LC_MONETARY=C;LC_MESSAGES=en_US.UTF-8;LC_PAPER=en_US.UTF-8;LC_NAME=C;LC_ADDRESS=C;LC_TELEPHONE=C;LC_MEASUREMENT=en_US.UTF-8;LC_IDENTIFICATION=C"
+-- Attaching packages --------------------------------------- tidyverse 1.3.1 --
+v ggplot2 3.3.3     v purrr   0.3.4
+v tibble  3.1.1     v dplyr   1.0.5
+v tidyr   1.1.3     v stringr 1.4.0
+v readr   1.4.0     v forcats 0.5.1
+-- Conflicts ------------------------------------------ tidyverse_conflicts() --
+x dplyr::between()   masks data.table::between()
+x dplyr::filter()    masks stats::filter()
+x dplyr::first()     masks data.table::first()
+x dplyr::lag()       masks stats::lag()
+x dplyr::last()      masks data.table::last()
+x purrr::transpose() masks data.table::transpose()
+[1] "hyper parameter values before MCMC: "
+        V1
+1        a
+2 tau_beta
+                                                                         V2
+1 -10,2.02139409667856,2.14898048353713,0.198679779648737,0.965373508293106
+2                                                                         1
+[1] 25295     5
+[1] "Solve for a_vector: "
+          p1       p2       p3        p4        p5    value fevals gevals niter
+L-BFGS-B -10 1.967633 2.154314 0.1964623 0.9881403 101.0954      8      8    NA
+         convcode  kkt1 kkt2 xtime
+L-BFGS-B        0 FALSE TRUE 0.026
+[1] "Fix tau_beta: " "1"             
+[1] "hyper parameter values updates after MCMC: "
+   #hyper_parameter
+1:                a
+2:         tau_beta
+                                                                       value
+1: -10,1.96763300039733,2.15431400231604,0.196462266420951,0.988140309314647
+2:                                                                         1
+[1] "Sum PIP =  5.8906"
+[1] "Regression R2 =  0.086605574"
+[1] "Posterior log likelihood =  64.19807"
+[1] "EM step time cost (in minutes) : "
+       user      system     elapsed 
+0.050800000 0.001416667 0.052500000 
