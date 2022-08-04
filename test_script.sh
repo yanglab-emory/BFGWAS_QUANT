@@ -55,7 +55,7 @@ sinfo
 /projects/YangLabData/Software/BFGWAS_QUANT/bin/Estep_mcmc -inputSS -Zscore /projects/YangLabData/Software/BFGWAS_QUANT/Example/ExData/Zscore/WGS_1898_samples_CHR_19_29790947_30727954.Zscore.txt.gz -LDcorr /projects/YangLabData/Software/BFGWAS_QUANT/Example/ExData/RefLD/WGS_1898_samples_CHR_19_29790947_30727954.LDcorr.txt.gz -a /projects/YangLabData/Software/BFGWAS_QUANT/Example/ExData/Anno/Anno_WGS_1898_samples_CHR_19_29790947_30727954.txt.gz -hfile /projects/YangLabData/Software/BFGWAS_QUANT/Example/Test_wkdir/hypval.current -maf 0.01 -n 1893 -bvsrm -smin 0 -smax 5 -win 100 -o WGS_1898_samples_CHR_19_29790947_30727954 -w 10 -s 10 -AnnoNumber 4 -seed 2022
 
 ###### Test M-step
-Rscript --vanilla /projects/YangLabData/Software/BFGWAS_QUANT/bin/Mstep.r /projects/YangLabData/Software/BFGWAS_QUANT/Example/Test_wkdir/Eoutput/hyptemp1.txt 1 2 1 1893 /projects/YangLabData/Software/BFGWAS_QUANT/Example/Test_wkdir/hypval.current /projects/YangLabData/Software/BFGWAS_QUANT/Example/Test_wkdir/Eoutput/paramtemp1.txt.gz /projects/YangLabData/Software/BFGWAS_QUANT/Example/Test_wkdir/Eoutput/EM_result.txt
+Rscript --vanilla /projects/YangLabData/Software/BFGWAS_QUANT/bin/Mstep.r /projects/YangLabData/jyang/BFGWAS_Test/test_sim/Eoutput/hyptemp1.txt 1 2 1 1893 /projects/YangLabData/jyang/BFGWAS_Test/test_sim/hypval.current /projects/YangLabData/jyang/BFGWAS_Test/test_sim/Eoutput/paramtemp1.txt.gz /projects/YangLabData/jyang/BFGWAS_Test/test_sim/Eoutput/EM_result.txt >> /projects/YangLabData/jyang/BFGWAS_Test/test_sim/Rout.txt
 
 
 ############ Generate LDcorr matrix and GWAS Zscore for simulation data (20 blocks)

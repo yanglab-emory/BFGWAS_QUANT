@@ -1,4 +1,3 @@
-library(optimx)
 Sys.setlocale('LC_ALL', 'C')
 options(stringsAsFactors=F)
 options(warn=-1)
@@ -35,6 +34,7 @@ prehyp <- read.table(hypcurrent_file, header=F)
 print("hyper parameter values before MCMC: ")
 print(prehyp)
 avec_old = str_split(prehyp[1, 2], ",") %>% unlist() %>% as.numeric()
+avec_old=avec_old[-1]
 tau_beta_old = as.numeric(prehyp[2, 2])
 
 ########## Read hyptemp file
@@ -43,40 +43,44 @@ hyp_dt = fread(hypfile, sep = "\t", header = TRUE)
 sum_gamma = sum(hyp_dt$sum_gamma)
 sum_beta2 = sum(hyp_dt$sum_beta2)
 
+R2 = sum(hyp_dt$r2, na.rm = TRUE)
+loglike = sum(hyp_dt$log_post_likelihood, na.rm = TRUE)
+print(paste("Sum PIP = ", sum_gamma))
+print(paste("Regression R2 = ", R2))
+print(paste("Posterior log likelihood = ",  loglike))
+
 ########## Read annotation data
 # param_file="/home/jyang/ResearchProjects/BFGWAS_QUANT_Test/Test_wkdir/output/WGS_1898_samples_CHR_19_43862455_44744108.paramtemp"
 param_dt = fread(param_file, sep="\t", header=TRUE)
 gamma_temp = param_dt$Pi
-split_anno <- function(x){
-  xvec = str_split(x, ",") %>% unlist()%>% t() %>% data.frame()
-  return(xvec)
-}
-Anno_df = map_dfr(param_dt$Anno, split_anno)
+Anno_df = param_dt[, -c(1:12)]
 Anum = ncol(Anno_df)
-A_temp = data.frame(intercept = 1, Anno_df) %>% unlist() %>% as.numeric() %>% matrix(nrow = nrow(param_dt))
+A_temp = as.numeric(unlist(Anno_df)) %>% matrix(nrow = nrow(Anno_df))
 print(dim(A_temp)) # Number of SNPs in the row; Number of annotations in the column
-gamma_A = gamma_temp * A_temp
+C0 = exp(-13.8)
+
+# gamma_A = gamma_temp * A_temp
 
 ####################################################
 ####### Solve for a_vec
 a_fn <- function(a) {
   Ata = A_temp %*% a
-  asum = sum(gamma_temp * Ata - log(1 + exp(Ata))) - 0.5 * sum(a * a)
+  asum = sum(gamma_temp * Ata - log(1 + exp(Ata - 13.8))) - 0.5 * sum(a * a)
   return(-asum)
 }
 
 a_gr <- function(a) {
   Ata = A_temp %*% a
-  a_gr_sum = apply( (gamma_A - as.vector(1/(1 + exp(-Ata))) * A_temp) , 2, sum) - a
+  a_gr_sum = apply( ((gamma_temp - as.vector(1/(1 + exp(13.8-Ata)))) * A_temp) , 2, sum) - a
   return( as.vector(-a_gr_sum) )
 }
 
 a_Hess <- function(a) {
   a_num = length(a)
-  exp_Ata = exp(A_temp %*% a)
+  exp_Ata = exp(A_temp %*% a - 13.8)
   a_Hess_sum = matrix(0, a_num, a_num)
   for (i in 1:nrow(A_temp)) {
-    a_Hess_value = as.numeric( 1 / ( 2 + exp_Ata[i] + (1/exp_Ata[i]) ) )  * outer(A_temp[i,], A_temp[i,])
+    a_Hess_value = as.numeric( 1 / ( 2 +  exp_Ata[i] + (1/exp_Ata[i]) ) )  * outer(A_temp[i,], A_temp[i,])
     a_Hess_sum = a_Hess_sum + a_Hess_value
   }
   a_Hess_sum = a_Hess_sum + diag(rep(1, a_num))
@@ -84,9 +88,12 @@ a_Hess <- function(a) {
 }
 
 a_temp = optimx(avec_old, fn = a_fn, method='L-BFGS-B', gr = a_gr,
-             #  hess = a_Hess,
+              # hess = a_Hess,
                hessian = TRUE,
-              upper = c(-10, rep(10, Anum)), lower = c(-14, rep(-10, Anum)) )
+              #upper = c(rep(10, Anum)),
+              lower = c(rep(0, Anum))
+              )
+
 print("Solve for a_vector: ")
 print(a_temp)
 
@@ -125,7 +132,7 @@ tau_beta_temp = Est_tau_beta(sum_gamma, sum_beta2, gwas_n, a_gamma, b_gamma)
 print(c("Estimated tau_beta: ", tau_beta_temp))
 
 #####################################################
-hypmat <- data.table(`#hyper_parameter` = c("a", "tau_beta"), value = c(paste(a_temp, collapse = ",") , tau_beta_temp))
+hypmat <- data.table(`#hyper_parameter` = c("a", "tau_beta"), value = c(paste(c(-13.8, a_temp), collapse = ",") , tau_beta_temp))
 
 ########## Write out updated hyper parameter values
 print("hyper parameter values updates after MCMC: ")
@@ -136,11 +143,7 @@ write.table(format(hypmat, scientific=TRUE),
             quote = FALSE, sep = "\t", row.names=FALSE, col.names=TRUE)
 
 ########## Write out updated hyper parameter values and se to EM_result_file
-R2 = sum(hyp_dt$r2, na.rm = TRUE)
-loglike = sum(hyp_dt$log_post_likelihood, na.rm = TRUE)
-print(paste("Sum PIP = ", sum_gamma))
-print(paste("Regression R2 = ", R2))
-print(paste("Posterior log likelihood = ",  loglike))
+
 
 # EM_result_file="/home/jyang/ResearchProjects/BFGWAS_QUANT_Test/Test_wkdir/EM_result.txt"
 if(k==0){

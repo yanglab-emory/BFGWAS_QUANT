@@ -8,7 +8,7 @@ setwd("/projects/YangLabData/Software/BFGWAS_QUANT/Example/AnalyzeResults")
 
 ######## Compare results
 #paramdata_bfgwas = LoadEMdata(filename="/projects/YangLabData/Software/BFGWAS_QUANT/Example/Test_wkdir/Eoutput/paramtemp3.txt.gz", header = TRUE)
-paramdata_bfgwas = LoadEMdata(filename="/projects/YangLabData/jyang/BFGWAS_Test/test_sim/Eoutput/paramtemp3.txt.gz", header = TRUE)
+paramdata_bfgwas = fread("/projects/YangLabData/jyang/BFGWAS_Test/test_sim/Eoutput/paramtemp0.txt.gz", header = TRUE)
 dim(paramdata_bfgwas)
 sum(paramdata_bfgwas$Pi)
 
@@ -22,12 +22,12 @@ dim(paramdata_bfgwas_sig)
 paramdata_bfgwas_sig
 
 ###### Manhantton Plot
-ggplot(paramdata_bfgwas, aes(x=POS, y = -log10(Pval))) +
+ggplot(paramdata_bfgwas, aes(x=POS, y = -log10(Pval_svt))) +
 	geom_point(shape = 21, fill = "blue", color = "blue") +
 	geom_hline(yintercept=-log10(5e-8)) +
- 	geom_point(data = paramdata_bfgwas_sig, aes(x=POS, y = -log10(Pval), color = Pi))  +
+ 	geom_point(data = paramdata_bfgwas_sig, aes(x=POS, y = -log10(Pval_svt), color = Pi))  +
  	scale_color_gradient(low="yellow", high="red")  +
-	facet_grid(cols = vars(CHR), scales = "free")
+	facet_grid(cols = vars(`#CHR`), scales = "free")
 ggsave("/projects/YangLabData/Software/BFGWAS_QUANT/Example/AnalyzeResults/mp.pdf")
 
 ###### Effect size plot: Bayesian estimates vs. marginal estimates

@@ -2,7 +2,7 @@
 ############## Test on GWAS AD data #####################
 #########################################################
 
-BFGWAS_dir="/projects/YangLabData/Software/BFGWAS_QUANT_08_03"
+BFGWAS_dir="/projects/YangLabData/Software/BFGWAS_QUANT"
 
 ############ Step 1 ###############
 LDdir=/home/jyang51/YangLabData/SharedData/AMP-AD/BFGWAS_LDdir

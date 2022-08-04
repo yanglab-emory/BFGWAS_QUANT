@@ -277,7 +277,16 @@ void BVSRM::WriteParam_SS(vector<pair<double, double> > &beta_g, const vector<SN
     ofstream outfile (file_str.c_str(), ofstream::out);
     if (!outfile) {cout<<"error writing file: "<<file_str.c_str()<<endl; return;}
 
-    outfile<<"#CHR\tPOS\tID\tREF\tALT\tMAF\tPi\tBeta\tmBeta\tChisqTest\tPval_svt\tRank\tAnno" << endl;
+    outfile<<"#CHR\tPOS\tID\tREF\tALT\tMAF\tPi\tBeta\tmBeta\tChisqTest\tPval_svt\tRank\t";
+    for(size_t j = 0; j < Anum; ++j)
+    {
+        if(j < (Anum - 1)){
+            outfile<<"Anno_" << j << "\t";
+        }
+        else{
+            outfile<<"Anno_" << j << endl;
+        }
+    }
 
     size_t r, n_causal;
     vector<size_t> rank_vec; // Save positions of potential causal SNPs
@@ -354,7 +363,7 @@ void BVSRM::WriteParam_SS(vector<pair<double, double> > &beta_g, const vector<SN
             {
                 if(j < (snp_pos[i].annoscore.size() -1))
                 {
-                    outfile << snp_pos[i].annoscore[j] << "," ;
+                    outfile << snp_pos[i].annoscore[j] << "\t" ;
                 }
                 else{
                     outfile << snp_pos[i].annoscore[j] << endl ;
@@ -393,7 +402,7 @@ void BVSRM::WriteParam_SS(vector<pair<double, double> > &beta_g, const vector<SN
             {
                 if(j < (snp_pos[i].annoscore.size() -1))
                 {
-                    outfile << snp_pos[i].annoscore[j] << "," ;
+                    outfile << snp_pos[i].annoscore[j] << "\t" ;
                 }
                 else{
                     outfile << snp_pos[i].annoscore[j] << endl ;
