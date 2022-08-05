@@ -37,8 +37,7 @@ ${BFGWAS_dir}/bin/gen_mkf.pl \
 
 ############ Step 3 ###############
 ## Clean all jobs in the make file when you need rerun everything
-# make -f ${wkdir}/simu_BFGWAS.mk clean
-# rm make.output make.err Rout.txt hypval.current output/** OUT/** Eoutput/**
+# make -f ${wkdir}/simu_BFGWAS.mk clean; rm make.output make.err Rout.txt hypval.current output/** OUT/** Eoutput/**
 # rm ${wkdir}/SlurmErr/** ${wkdir}/SlurmOut/**
 
 ######### Submit the job for running the makefile

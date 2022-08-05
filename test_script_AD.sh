@@ -15,8 +15,8 @@ Nsample=1893 # Set as reference data (LD) sample size
 Anum=10 # 10 annotations
 maf=0.001
 em=3 # EM steps
-Nburnin=10000  # Burn-in iterations in MCMC
-Nmcmc=10000  # MCMC iteration number
+Nburnin=100  # Burn-in iterations in MCMC
+Nmcmc=1000  # MCMC iteration number
 
 # Zscore_dir=/home/jyang51/YangLabData/SharedData/AMP-AD/GWAS_AD_Data; wkdir="/home/jyang51/YangLabData/jyang/BFGWAS_Test/test_AD"; hfile=/home/jyang51/YangLabData/jyang/BFGWAS_Test/hypval_10anno_igap.txt
 Zscore_dir=/projects/YangLabData/jyang/BFGWAS_Test/test_rosmap/Zscore; wkdir="/home/jyang51/YangLabData/jyang/BFGWAS_Test/test_rosmap"; hfile=/home/jyang51/YangLabData/jyang/BFGWAS_Test/hypval_10anno_rosmap.txt
@@ -37,8 +37,7 @@ ${BFGWAS_dir}/bin/gen_mkf.pl \
 
 ############ Step 3 ###############
 ## Clean all jobs in the make file when you need rerun everything
-make -f ${mkfile} clean
-rm make.output make.err Rout.txt hypval.current output/** OUT/** Eoutput/**
+make -f ${mkfile} clean ; rm make.output make.err Rout.txt hypval.current output/** OUT/** Eoutput/**
 
 ######### Submit the job for running the makefile
 j=100 # Number of cores to request

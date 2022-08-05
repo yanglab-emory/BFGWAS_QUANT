@@ -299,19 +299,16 @@ void BVSRM::WriteParam_SS(vector<pair<double, double> > &beta_g, const vector<SN
 
     n_causal = 0;
     for (size_t i=0; i<ns_test; ++i) {
-        if ( (beta_g[i].second / (double)s_step) >= 0.001)
+        if ( (beta_g[i].second / (double)s_step) >= 0.01)
         {
             r = mapPos2Rank[i];
             rank_vec.push_back(r) ;
             mapRank2Vec[r]=n_causal;
             n_causal++;
-        }else{
-           // beta_g[i].first = 0.0;
-            //beta_g[i].second = 0.0;
         }
     }
     size_t r_size = rank_vec.size();
-    cout << "WriteParam_SS: Selected # SNPs with PIP > 0.001 : " << r_size << endl;
+    cout << "WriteParam_SS: Selected # SNPs with PIP > 0.01 : " << r_size << endl;
 
     size_t pos_i, pos_j;
     double xtx_ij;
@@ -345,14 +342,18 @@ void BVSRM::WriteParam_SS(vector<pair<double, double> > &beta_g, const vector<SN
                 outfile << scientific << setprecision(3)  << snp_pos[i].maf << "\t";
             }
 
-            if ( mapRank2Vec[r] & (beta_g[i].second > 0.0) ) {
+            if ( beta_g[i].second > 0.0 ) {
                 pi_temp = beta_g[i].second/(double)s_step;
-                beta_mcmc[i] = gsl_vector_get(beta_hat, mapRank2Vec[r]);
+                if(mapRank2Vec[r]){
+                    beta_mcmc[i] = gsl_vector_get(beta_hat, mapRank2Vec[r]);
+                }else{
+                    beta_mcmc[i] = beta_g[i].first/beta_g[i].second;
+                }
                 outfile << pi_temp << "\t" << beta_mcmc[i] << "\t" << mbeta[i]  << "\t" ;
                 em_gamma = em_gamma + pi_temp ;
                 sumbeta2 = sumbeta2 + pi_temp * beta_mcmc[i] * beta_mcmc[i] ;
             }
-            else {
+            else{
                 pi_temp = 0.0;
                 outfile << 0.0 << "\t" << 0.0 << "\t" << mbeta[i] << "\t";
             }
@@ -384,8 +385,16 @@ void BVSRM::WriteParam_SS(vector<pair<double, double> > &beta_g, const vector<SN
                 outfile << scientific << setprecision(3)  << snp_pos[i].maf << "\t";
             }
 
-            pi_temp = 0.0;
-            outfile << 0.0 << "\t" << 0.0 << "\t" << mbeta[i] << "\t";
+            if ( beta_g[i].second > 0.0 ) {
+                pi_temp = beta_g[i].second/(double)s_step;
+                beta_mcmc[i] = beta_g[i].first/beta_g[i].second;
+                outfile << pi_temp << "\t" << beta_mcmc[i] << "\t" << mbeta[i]  << "\t" ;
+                em_gamma = em_gamma + pi_temp ;
+                sumbeta2 = sumbeta2 + pi_temp * beta_mcmc[i] * beta_mcmc[i] ;
+            }else{
+                pi_temp = 0.0;
+                outfile << 0.0 << "\t" << 0.0 << "\t" << mbeta[i] << "\t";
+            }
             outfile << scientific << setprecision(3) << pos_ChisqTest[r].second << "\t"<< pval[r] << "\t" ;
             outfile << r << "\t";
 
