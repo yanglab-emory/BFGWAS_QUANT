@@ -15,10 +15,10 @@ Nsample=1893 # Set as reference data (LD) sample size
 Anum=10 # 10 annotations
 maf=0.001
 em=3 # EM steps
-Nburnin=100  # Burn-in iterations in MCMC
-Nmcmc=1000  # MCMC iteration number
+Nburnin=2000  # Burn-in iterations in MCMC
+Nmcmc=10000  # MCMC iteration number
 
-# Zscore_dir=/home/jyang51/YangLabData/SharedData/AMP-AD/GWAS_AD_Data; wkdir="/home/jyang51/YangLabData/jyang/BFGWAS_Test/test_AD"; hfile=/home/jyang51/YangLabData/jyang/BFGWAS_Test/hypval_10anno_igap.txt
+#Zscore_dir=/home/jyang51/YangLabData/SharedData/AMP-AD/IGAP_AD_Data; wkdir="/home/jyang51/YangLabData/jyang/BFGWAS_Test/test_AD"; hfile=/home/jyang51/YangLabData/jyang/BFGWAS_Test/hypval_10anno_igap.txt
 Zscore_dir=/projects/YangLabData/jyang/BFGWAS_Test/test_rosmap/Zscore; wkdir="/home/jyang51/YangLabData/jyang/BFGWAS_Test/test_rosmap"; hfile=/home/jyang51/YangLabData/jyang/BFGWAS_Test/hypval_10anno_rosmap.txt
 
 cd $wkdir
@@ -52,7 +52,7 @@ sinfo
 
 
 ################ Test M-step ########################
-Rscript --vanilla /projects/YangLabData/Software/BFGWAS_QUANT_08_03/bin/Mstep.r /home/jyang51/YangLabData/jyang/BFGWAS_Test/test_rosmap/Eoutput/hyptemp0.txt 0 2 1 1893 /home/jyang51/YangLabData/jyang/BFGWAS_Test/test_rosmap/hypval.current /home/jyang51/YangLabData/jyang/BFGWAS_Test/test_rosmap/Eoutput/paramtemp0.txt.gz /home/jyang51/YangLabData/jyang/BFGWAS_Test/test_rosmap/Eoutput/EM_result.txt
+Rscript --vanilla /projects/YangLabData/Software/BFGWAS_QUANT/bin/Mstep.r /home/jyang51/YangLabData/jyang/BFGWAS_Test/test_rosmap/Eoutput/hyptemp1.txt 1 2 1 1893 /home/jyang51/YangLabData/jyang/BFGWAS_Test/test_rosmap/hypval.current /home/jyang51/YangLabData/jyang/BFGWAS_Test/test_rosmap/Eoutput/paramtemp1.txt.gz /home/jyang51/YangLabData/jyang/BFGWAS_Test/test_rosmap/Eoutput/EM_result.txt
 
 
 

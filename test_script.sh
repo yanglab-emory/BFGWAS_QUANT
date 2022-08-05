@@ -10,7 +10,6 @@ LDdir=${BFGWAS_dir}/Example/ExData/RefLD
 anno_dir=${BFGWAS_dir}/Example/ExData/Anno
 
 ############# Test Simulation Data with  20 blocks
-wkdir=/projects/YangLabData/jyang/BFGWAS_Test/test_sim; cd $wkdir
  LDdir=/home/jyang51/YangLabData/SharedData/AMP-AD/BFGWAS_LDdir
  filehead=/projects/YangLabData/jyang/BFGWAS_Test/sim_20blocks_filehead.txt
  Zscore_dir=/home/jyang51/YangLabData/jyang/BFGWAS_Test/test_sim/Sim_Zscore
@@ -24,6 +23,8 @@ hfile=${BFGWAS_dir}/Example/ExData/hypval_4anno.txt #  Initial prior parameter v
 em=3 # EM steps
 Nburnin=10000  # Burn-in iterations in MCMC
 Nmcmc=10000  # MCMC iteration number
+
+wkdir=/projects/YangLabData/jyang/BFGWAS_Test/test_sim; cd $wkdir
 mkfile=${wkdir}/simu_BFGWAS.mk ## Make file directory
 
 ########### Generate make file with all jobs

@@ -29,7 +29,7 @@ EM_result_file = args[[8]] # Save EM_result_file
 
 ########### Read prior hyper parameter values
 #rv is phenotype variance, rv = mean(hypdata[, "rv"])
-# hypcurrent_file = "/home/jyang/ResearchProjects/BFGWAS_QUANT_Test/Test_Data/hypval_10anno.txt"
+# hypcurrent_file = "/home/jyang51/YangLabData/jyang/BFGWAS_Test/test_sim/hypval.current"
 prehyp <- read.table(hypcurrent_file, header=F)
 print("hyper parameter values before MCMC: ")
 print(prehyp)
@@ -38,7 +38,7 @@ avec_old=avec_old[-1]
 tau_beta_old = as.numeric(prehyp[2, 2])
 
 ########## Read hyptemp file
-# hypfile = "/home/jyang/ResearchProjects/BFGWAS_QUANT_Test/Test_wkdir/output/WGS_1898_samples_CHR_19_43862455_44744108.hyptemp"
+# hypfile = "/home/jyang51/YangLabData/jyang/BFGWAS_Test/test_sim/Eoutput/hyptemp3.txt"
 hyp_dt = fread(hypfile, sep = "\t", header = TRUE)
 sum_gamma = sum(hyp_dt$sum_gamma)
 sum_beta2 = sum(hyp_dt$sum_beta2)
@@ -50,7 +50,7 @@ print(paste("Regression R2 = ", R2))
 print(paste("Posterior log likelihood = ",  loglike))
 
 ########## Read annotation data
-# param_file="/home/jyang/ResearchProjects/BFGWAS_QUANT_Test/Test_wkdir/output/WGS_1898_samples_CHR_19_43862455_44744108.paramtemp"
+# param_file="/home/jyang51/YangLabData/jyang/BFGWAS_Test/test_sim/Eoutput/paramtemp3.txt.gz"
 param_dt = fread(param_file, sep="\t", header=TRUE)
 gamma_temp = param_dt$Pi
 Anno_df = param_dt[, -c(1:12)]
@@ -71,26 +71,31 @@ a_fn <- function(a) {
 
 a_gr <- function(a) {
   Ata = A_temp %*% a
-  a_gr_sum = apply( ((gamma_temp - as.vector(1/(1 + exp(13.8-Ata)))) * A_temp) , 2, sum) - a
+  C0expAta = exp(Ata-13.8)
+  a_gr_sum = apply( ((gamma_temp - as.vector((C0expAta)/(1 + C0expAta))) * A_temp) , 2, sum) - a
   return( as.vector(-a_gr_sum) )
 }
 
 a_Hess <- function(a) {
   a_num = length(a)
-  exp_Ata = exp(A_temp %*% a - 13.8)
+  exp_Ata = exp(A_temp %*% a)
+  C0expAta = exp(Ata - 13.8)
   a_Hess_sum = matrix(0, a_num, a_num)
   for (i in 1:nrow(A_temp)) {
-    a_Hess_value = as.numeric( 1 / ( 2 +  exp_Ata[i] + (1/exp_Ata[i]) ) )  * outer(A_temp[i,], A_temp[i,])
+    a_Hess_value = as.numeric( C0expAta[i] / ( 1 +  C0expAta[i] )^2 )  * outer(A_temp[i,], A_temp[i,])
     a_Hess_sum = a_Hess_sum + a_Hess_value
   }
   a_Hess_sum = a_Hess_sum + diag(rep(1, a_num))
   return( as.matrix(a_Hess_sum))
 }
 
-a_temp = optimx(avec_old, fn = a_fn, method='L-BFGS-B', gr = a_gr, # hess = a_Hess,
-              hessian = TRUE,
-              lower = c(rep(0, Anum))
+# avec_old = rep(0, 4)
+a_temp = optimx(avec_old, fn = a_fn, method='L-BFGS-B', gr = a_gr,
+              # hess = a_Hess,
+              hessian = TRUE, lower = c(rep(0, Anum))
               )
+# optimx(avec_old, fn = a_fn, method="Nelder-Mead", gr = a_gr)
+# optimx(avec_old, fn = a_fn, gr = a_gr, hess = a_Hess, method='L-BFGS-B', lower = c(rep(0, Anum)) )
 
 print("Solve for a_vector: ")
 print(a_temp)
@@ -129,8 +134,8 @@ CI_fish_tau_beta <- function(sum_gamma, sum_beta2, gwas_n, a, b){
   return(c(tau_beta_hat, se_tau_beta))
 }
 
-tau_beta_temp = Est_tau_beta(sum_gamma, sum_beta2, gwas_n, a_gamma, b_gamma)
-# tau_beta_temp = tau_beta_old
+#tau_beta_temp = Est_tau_beta(sum_gamma, sum_beta2, gwas_n, a_gamma, b_gamma)
+tau_beta_temp = tau_beta_old
 print(c("Estimated tau_beta: ", tau_beta_temp))
 
 #####################################################
