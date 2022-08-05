@@ -18,16 +18,16 @@ require(scales)
 cubic_trans = function() trans_new("cubic", function(x) x^(1/3), function(x) x^(3))
 
 ## Read Eoutput/hyptemp*.txt
-LoadEMdata <- function(filename, header = FALSE){
-    paramdata = fread(filename, sep = "\t", header = header)
-    setnames(paramdata, c("CHR", "POS", "ID", "REF", "ALT", "MAF", "Pi", "Beta", "mBeta", "Chisq", "Pval", "Rank", "Anno"))
-    setkey(paramdata, "ID")
+LoadEMdata <- function(filename){
+    paramdata = fread(filename, sep = "\t", header = TRUE)
+    colnames(paramdata)[1] = "CHR"
+   # setkey(paramdata, "ID")
     return(paramdata)
 }
 
 # Read Eoutput/EM_result.txt
-LoadEMhyp <- function(filename, header=FALSE){
-    EMhyp_data <- read.table(filename, sep = "\t", header = header)
+LoadEMhyp <- function(filename){
+    EMhyp_data <- fread(filename, sep = "\t", header =TRUE)
     return(EMhyp_data)
 }
 

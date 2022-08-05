@@ -104,8 +104,10 @@ a_temp = a_temp[1:length(avec_old)]
 Est_tau_beta <- function(sum_gamma, sum_beta2, gwas_n, a, b){
   tau_beta_hat =  ( sum_gamma + 2 * (a - 1)) / ( gwas_n * sum_beta2 + 2 * b)
   if(tau_beta_hat > 1){
+    print(c("tau_beta_hat estimated to be ", tau_beta_hat, ">1. Will be set as 1."))
     tau_beta_hat = 1;
   }else if (tau_beta_hat < 0.01){
+    print(c("tau_beta_hat estimated to be ", tau_beta_hat, "<0.01. Will be set as 0.01."))
     tau_beta_hat = 0.01
   }
   return(tau_beta_hat)
@@ -120,8 +122,10 @@ CI_fish_tau_beta <- function(sum_gamma, sum_beta2, gwas_n, a, b){
     se_tau_beta = tau_beta_hat / sqrt(temp)
   }
   if(tau_beta_hat > 1){
+    print(c("tau_beta_hat estimated to be ", tau_beta_hat, ">1. Will be set as 1."))
     tau_beta_hat = 1;
   }else if (tau_beta_hat < 0.01){
+    print(c("tau_beta_hat estimated to be ", tau_beta_hat, "<0.01. Will be set as 0.01."))
     tau_beta_hat = 0.01
   }
   return(c(tau_beta_hat, se_tau_beta))

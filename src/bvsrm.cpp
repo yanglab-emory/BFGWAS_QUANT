@@ -299,12 +299,15 @@ void BVSRM::WriteParam_SS(vector<pair<double, double> > &beta_g, const vector<SN
 
     n_causal = 0;
     for (size_t i=0; i<ns_test; ++i) {
-        if ( (beta_g[i].second / (double)s_step) > 0.01)
+        if ( (beta_g[i].second / (double)s_step) >= 0.01)
         {
             r = mapPos2Rank[i];
             rank_vec.push_back(r) ;
             mapRank2Vec[r]=n_causal;
             n_causal++;
+        }else{
+           // beta_g[i].first = 0.0;
+            //beta_g[i].second = 0.0;
         }
     }
     size_t r_size = rank_vec.size();
@@ -332,6 +335,7 @@ void BVSRM::WriteParam_SS(vector<pair<double, double> > &beta_g, const vector<SN
         // posterior Bayesian estimates of beta
         if(LapackSolve(D_gamma, mbeta_gamma, beta_hat)!=0)
             EigenSolve(D_gamma, mbeta_gamma, beta_hat);
+
         for (size_t i=0; i<ns_test; ++i) {
             r = mapPos2Rank[i]; //map to rank
             outfile<<snp_pos[i].chr<<"\t"<<snp_pos[i].bp<<"\t"<<snp_pos[i].rs<<"\t"<< snp_pos[i].a_major<<"\t"<<snp_pos[i].a_minor<<"\t" ;
@@ -346,7 +350,7 @@ void BVSRM::WriteParam_SS(vector<pair<double, double> > &beta_g, const vector<SN
                 if(mapRank2Vec[r]){
                     beta_mcmc[i] = gsl_vector_get(beta_hat, mapRank2Vec[r]);
                 }else{
-                    beta_mcmc[i] = 0.0;
+                    beta_mcmc[i] = beta_g[i].first/beta_g[i].second ;
                 }
                 outfile << pi_temp << "\t" << beta_mcmc[i] << "\t" << mbeta[i]  << "\t" ;
                 em_gamma = em_gamma + pi_temp ;
@@ -3387,8 +3391,8 @@ double BVSRM::ProposeGamma_SS (const vector<size_t> &rank_old, vector<size_t> &r
                     pos_add = (pos_remove - win) + j_add;
                 }
                 r_add = mapPos2Rank[pos_add];
-
                 gsl_a = MakeProposalSS(LD, mbeta, pos_add, p_cond_add, mapRank2in, beta_cond, rtr, rank_new);
+
                 double prob_total_remove=1.0;
                 double prob_total_add=1.0;
                 for (size_t ii=0; ii<rank_new.size(); ++ii) {
