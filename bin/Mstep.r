@@ -87,10 +87,8 @@ a_Hess <- function(a) {
   return( as.matrix(a_Hess_sum))
 }
 
-a_temp = optimx(avec_old, fn = a_fn, method='L-BFGS-B', gr = a_gr,
-              # hess = a_Hess,
-               hessian = TRUE,
-              #upper = c(rep(10, Anum)),
+a_temp = optimx(avec_old, fn = a_fn, method='L-BFGS-B', gr = a_gr, # hess = a_Hess,
+              hessian = TRUE,
               lower = c(rep(0, Anum))
               )
 
@@ -106,9 +104,9 @@ Est_tau_beta <- function(sum_gamma, sum_beta2, gwas_n, a, b){
   if(tau_beta_hat > 1){
     print(c("tau_beta_hat estimated to be ", tau_beta_hat, ">1. Will be set as 1."))
     tau_beta_hat = 1;
-  }else if (tau_beta_hat < 0.01){
-    print(c("tau_beta_hat estimated to be ", tau_beta_hat, "<0.01. Will be set as 0.01."))
-    tau_beta_hat = 0.01
+  }else if (tau_beta_hat < 0.1){
+    print(c("tau_beta_hat estimated to be ", tau_beta_hat, "<0.01. Will be set as 0.1."))
+    tau_beta_hat = 0.1
   }
   return(tau_beta_hat)
 }
@@ -124,15 +122,15 @@ CI_fish_tau_beta <- function(sum_gamma, sum_beta2, gwas_n, a, b){
   if(tau_beta_hat > 1){
     print(c("tau_beta_hat estimated to be ", tau_beta_hat, ">1. Will be set as 1."))
     tau_beta_hat = 1;
-  }else if (tau_beta_hat < 0.01){
-    print(c("tau_beta_hat estimated to be ", tau_beta_hat, "<0.01. Will be set as 0.01."))
-    tau_beta_hat = 0.01
+  }else if (tau_beta_hat < 0.1){
+    print(c("tau_beta_hat estimated to be ", tau_beta_hat, "<0.01. Will be set as 0.1."))
+    tau_beta_hat = 0.1
   }
   return(c(tau_beta_hat, se_tau_beta))
 }
 
-tau_beta_temp = Est_tau_beta(sum_gamma, sum_beta2, gwas_n, a_gamma, b_gamma)
-# tau_beta_temp = tau_beta_old
+# tau_beta_temp = Est_tau_beta(sum_gamma, sum_beta2, gwas_n, a_gamma, b_gamma)
+tau_beta_temp = tau_beta_old
 print(c("Estimated tau_beta: ", tau_beta_temp))
 
 #####################################################

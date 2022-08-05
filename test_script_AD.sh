@@ -18,11 +18,11 @@ em=3 # EM steps
 Nburnin=10000  # Burn-in iterations in MCMC
 Nmcmc=10000  # MCMC iteration number
 
-Zscore_dir=/home/jyang51/YangLabData/SharedData/AMP-AD/GWAS_AD_Data; wkdir="/home/jyang51/YangLabData/jyang/BFGWAS_Test/test_AD"
-# Zscore_dir=/projects/YangLabData/jyang/BFGWAS_Test/test_rosmap/Zscore; wkdir="/home/jyang51/YangLabData/jyang/BFGWAS_Test/test_rosmap"
+# Zscore_dir=/home/jyang51/YangLabData/SharedData/AMP-AD/GWAS_AD_Data; wkdir="/home/jyang51/YangLabData/jyang/BFGWAS_Test/test_AD"; hfile=/home/jyang51/YangLabData/jyang/BFGWAS_Test/hypval_10anno_igap.txt
+Zscore_dir=/projects/YangLabData/jyang/BFGWAS_Test/test_rosmap/Zscore; wkdir="/home/jyang51/YangLabData/jyang/BFGWAS_Test/test_rosmap"; hfile=/home/jyang51/YangLabData/jyang/BFGWAS_Test/hypval_10anno_rosmap.txt
+
 cd $wkdir
 mkfile=${wkdir}/BFGWAS_AD.mk
-hfile=/home/jyang51/YangLabData/jyang/BFGWAS_Test/hypval_10anno.txt
 
 
 ############ Step 2 ###############

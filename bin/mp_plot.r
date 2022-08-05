@@ -42,20 +42,23 @@ print("Make Manhanttan Plot : ")
 print(file_out)
 
 gwas <- fread(paramFile, sep = "\t", header = TRUE)
-setnames(gwas, c("CHR", "POS", "ID", "REF", "ALT", "MAF", "Pi", "Beta", "mBeta", "Chisq", "Pval", "Rank", "Anno"))
-gwas <- gwas[!is.na(gwas$Pval), ]
+colnames(gwas)[1] = "CHR"
+gwas <- gwas[!is.na(gwas$Pval_svt), ]
 
 #### Calculate -log10_pval
-pval <- gwas$Pval
+pval <- gwas$Pval_svt
 mlog10_pval <- -log10(pval)
 mlog10_pval[mlog10_pval == Inf] <- max(mlog10_pval[mlog10_pval < Inf]) + runif(sum(mlog10_pval == Inf))
 
 # set chromosome colors / prepare data frame and reorder variants
 # gwas is a data.table here
-chrs <- sort(unique(gwas$CHR))
 p = dim(gwas)[1]
 pcol = rep("grey40", length = p)
-pcol[gwas$CHR %% 2 == 0] <- "grey60"
+chrs <- sort(unique(gwas$CHR))
+if(length(chrs) >=2){
+    chrs_col = chrs[seq(2, length(chrs), by = 2)]
+    pcol[gwas$CHR %in% chrs_col] <- "grey60"
+}
 
 gwas_man <- data.frame(chr=gwas$CHR, bp=gwas$POS, mlog10_pval = mlog10_pval, pi = gwas$Pi, check.names=F)
 gwas_man <- data.frame(gwas_man, plotPos=NA, highlightColor=NA, pch=20,
@@ -71,7 +74,7 @@ if(sum(gwas_man$pi>0.1068)>0){
 # determine gap between chromosomes
 chrGAP <- 1.5E9/(pngwidth /16)
 endPos <- 0
-chrs = sort(unique(gwas_man$chr))
+
 plotPos <- numeric(0); chrLab <- numeric(0); chrEnd <- numeric(0);
 for(chr_num in chrs){
     chrTemp <- dplyr::filter(gwas_man, chr == chr_num)
