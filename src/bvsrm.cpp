@@ -312,7 +312,7 @@ void BVSRM::WriteParam_SS(vector<pair<double, double> > &beta_g, const vector<SN
 
     size_t pos_i, pos_j;
     double xtx_ij;
-    if(r_size > 0) {
+    if(r_size > 1) {
         gsl_matrix *D_gamma = gsl_matrix_alloc(r_size, r_size);
         gsl_vector *mbeta_gamma = gsl_vector_alloc(r_size);
         gsl_vector *beta_hat = gsl_vector_alloc(r_size); // calculate posterior beta
