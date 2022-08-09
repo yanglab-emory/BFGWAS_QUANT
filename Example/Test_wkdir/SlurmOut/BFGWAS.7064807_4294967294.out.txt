@@ -1,0 +1,4 @@
+Working directory: /projects/YangLabData/Software/BFGWAS_QUANT/Example/Test_wkdir
+Makefile: /projects/YangLabData/Software/BFGWAS_QUANT/Example/Test_wkdir/simu_BFGWAS.mk
+Number of jobs in parallel: 4
+Run makefile /projects/YangLabData/Software/BFGWAS_QUANT/Example/Test_wkdir/simu_BFGWAS.mk with 4 parallel jobs
