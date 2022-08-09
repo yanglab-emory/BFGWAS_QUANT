@@ -11,14 +11,14 @@ Bayesian Functional Genome-wide Association Study using Multivariate Quantitativ
 
 - [Software Installation](#software-installation)
 - [Input Files](#input-files)
-	- [Individual-level GWAS Data Input Files](#input-file-1)
+	- [Individual-level GWAS Data Input Files](#individual-level-gwas-data-input-files)
 		- [1. Genotype VCF Files](#1-genotype-vcf-files)
 		- [2. Phenotype File](#2-phenotype-file)
-	- [Summary-level GWAS Data Input Files](#input-file-2)
+	- [Summary-level GWAS Data Input Files](#summary-level-gwas-data-input-files)
 		- [1. GWAS Zscore File](#1-gwas-zscore-file)
 		- [2. Reference LD File](#2-reference-LD-file)
-		- [3. Annotation File](#3-anno-file)
-	- [Other Input Files](#input-files)
+		- [3. Annotation File](#3-annotation-file)
+	- [Other Input Files](#other-input-files)
 		- [1. Genome Block Prefix File](#1-genome-block-prefix-file)
 		- [2. Prior Parameter File](#2-prior-parameter-file)
 - [Example Usage](#example-usage)
@@ -26,7 +26,7 @@ Bayesian Functional Genome-wide Association Study using Multivariate Quantitativ
 	- [Step 2. Generate Makefile](#step-2-generate-makefile)
 	- [Step 3. Run Makefile](#step-3-run-makefile)
 - [Output Files](#output-files)
-- [Analyse BFGWAS_QUANT Results](#analyze-BFGWAS_QUANT-results)
+- [Analyse BFGWAS_QUANT Results](#analyse-bfgwas_quant-results)
 - [Remarks](#remarks)
 
 ---
@@ -136,7 +136,9 @@ make
 
 
 
-## Example Usage (`./test_script.sh`)
+## Example Usage
+
+### **Example commands: `./test_script.sh`**
 
 #### Step 1. Obtain GWAS Zscore and LD Files
 - Shell script `./bin/GetRefLD.sh` can be used to generate GWAS Zscore and LD files sequentially
