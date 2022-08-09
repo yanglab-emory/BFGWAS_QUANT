@@ -1,10 +1,10 @@
 #!/bin/bash
 #SBATCH --job-name=BFGWAS
 #SBATCH --partition=yanglab,day-long-cpu,week-long-cpu,month-long-cpu,preemptable
-#SBATCH --mem=30G
-#SBATCH --cpus-per-task=28
-#SBATCH --output=/home/jyang51/YangLabData/jyang/BFGWAS_Test/SlurmOut/BFGWAS.%A_%a.out.txt
-#SBATCH --error=/home/jyang51/YangLabData/jyang/BFGWAS_Test/SlurmErr/SBFGWAS.%A_%a.err.txt
+#SBATCH --mem=32G
+#SBATCH --cpus-per-task=4
+#SBATCH --output=./SlurmOut/BFGWAS.%A_%a.out.txt
+#SBATCH --error=./SlurmErr/SBFGWAS.%A_%a.err.txt
 #SBATCH --mail-user=jingjing.yang@emory.edu
 #SBATCH --mail-type=END,FAIL
 

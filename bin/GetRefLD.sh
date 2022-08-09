@@ -83,10 +83,6 @@ cat ${filehead} | while read line ; do
 	if [ -s ${LDdir}/${line}.LDcorr.txt.gz ] ; then
 		echo ${LDdir}/${line}.LDcorr.txt.gz exists!
 		LDwindow_i=1
-		if [ -s ${Zscore_dir}/${line}.Zscore.txt.gz ] ; then
-			echo ${Zscore_dir}/${line}.Zscore.txt.gz exists.
-			continue
-		fi
 	fi
 
 	if [ "${genofile_type}" == "vcf" ] ; then
@@ -111,15 +107,24 @@ cat ${filehead} | while read line ; do
 				exit 1
 			fi
 	else
-		echo Please specify \'--genofile_type vcf\' or \'--genofile_type geno\' ...
+		echo Please specify \'--genofile_type vcf\' ...
 		exit 1
 	fi
 
 	echo Successfully generate GWAS summary score statistic and LD files for genome block $line.
 
 ##### Copy summary stat back
-	rsync  ./output/${line}.LDcorr.txt.gz* ${LDdir}/
-	rsync  ./output/${line}.Zscore.txt.gz* ${Zscore_dir}/
+
+
+	if [ ! -s ${LDdir}/${line}.LDcorr.txt.gz ] ; then
+		rsync  ./output/${line}.LDcorr.txt.gz* ${LDdir}/
+	fi
+
+	if [ ! -s ${Zscore_dir}/${line}.Zscore.txt.gz ] ; then
+		rsync  ./output/${line}.Zscore.txt.gz* ${Zscore_dir}/
+	else
+		echo ${Zscore_dir}/${line}.Zscore.txt.gz exists.
+	fi
 
 	## Remove temperary output directory
 	rm -f ./output/${line}*
