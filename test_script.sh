@@ -1,16 +1,18 @@
-BFGWAS_dir="/projects/YangLabData/Software/BFGWAS_QUANT"
+BFGWAS_dir="/projects/YangLabData/Software/BFGWAS_QUANT"  # Tool directory
 
 ############# Test Simulation Data with 4 blocks
 ##### Set directories for filehead, GWAS summary data, Annotation Data, and Reference LD files
-filehead=${BFGWAS_dir}/Example/ExData/filehead_4block.txt
-Zscore_dir=${BFGWAS_dir}/Example/ExData/Zscore
-LDdir=${BFGWAS_dir}/Example/ExData/RefLD
+filehead=${BFGWAS_dir}/Example/ExData/filehead_4block.txt # Genome block prefix file
+Zscore_dir=${BFGWAS_dir}/Example/ExData/Zscore # Zscore file directory
+LDdir=${BFGWAS_dir}/Example/ExData/RefLD # LD file directory
 
-############ Step 1 ###############
+############ Step 1. Obtain GWAS Zscore and LD Files ###############
 ####  Generate LDcorr matrix and GWAS Zscore for simulation data (4 blocks)
 pheno=${BFGWAS_dir}/Example/ExData/sim_pheno.txt
 geno_dir=/home/jyang51/YangLabData/SharedData/AMP-AD/ROSMAP/WGS_JointCall/LDdetect_SegmentedVCF
 LDwindow=1000000
+maf=0.001
+GTfield=GT
 
 #### Run all blocks sequencially; >32GB memory might be needed
 ${BFGWAS_dir}/bin/GetRefLD.sh --wkdir ${wkdir} \
@@ -25,19 +27,19 @@ ${BFGWAS_dir}/bin/Estep_mcmc -vcf ${geno_dir}/${line}.vcf.gz -p ${pheno} \
                     -maf ${maf} -GTfield ${GTfield} \
                     -o ${line} -LDwindow ${LDwindow} -saveSS -zipSS
 
-############ Step 2 ###############
+############ Step 2. Generate Makefile ###############
 #### Set input argument values
-Nsample=1893 # sample size
-Anum=4 # 4 annotations
+Nsample=1893 # GWAS sample size
+Anum=4 # Number of annotations
 em=3 # EM steps
 Nburnin=10000  # Burn-in iterations in MCMC
 Nmcmc=10000  # MCMC iteration number
-anno_dir=${BFGWAS_dir}/Example/ExData/Anno
+anno_dir=${BFGWAS_dir}/Example/ExData/Anno # Annotation file directory
 hfile=${BFGWAS_dir}/Example/ExData/hypval_4anno.txt #  Initial prior parameter values
 
-wkdir=${BFGWAS_dir}/Example/Test_wkdir
+wkdir=${BFGWAS_dir}/Example/Test_wkdir # Working directory
 cd $wkdir
-mkfile=${wkdir}/simu_BFGWAS.mk ## Make file directory
+mkfile=${wkdir}/simu_BFGWAS.mk ## Makefile directory
 
 ########### Generate make file with all jobs
 ${BFGWAS_dir}/bin/gen_mkf.pl \
@@ -48,10 +50,10 @@ ${BFGWAS_dir}/bin/gen_mkf.pl \
 --Nburnin ${Nburnin} --Nmcmc ${Nmcmc} --NmcmcLast ${Nmcmc} \
 --em ${em} --mf ${mkfile}
 
-############ Step 3 ###############
+############ Step 3. Run Makefile ###############
 ## Clean all jobs in the make file when you need re-run everything
-make -f ${wkdir}/simu_BFGWAS.mk clean;
-rm make.output make.err Rout.txt hypval.current
+make -f ${wkdir}/simu_BFGWAS.mk clean; # Clean target files
+rm make.output make.err Rout.txt hypval.current; # Remove files from previous runs
 
 ######### Submit the job for running the makefile
 j=4 # Number of cores to request
