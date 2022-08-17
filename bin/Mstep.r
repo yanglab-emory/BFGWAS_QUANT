@@ -34,6 +34,7 @@ prehyp <- read.table(hypcurrent_file, header=F)
 print("hyper parameter values before MCMC: ")
 print(prehyp)
 avec_old = str_split(prehyp[1, 2], ",") %>% unlist() %>% as.numeric()
+avec_0 = avec_old[1]
 avec_old=avec_old[-1]
 tau_beta_old = as.numeric(prehyp[2, 2])
 
@@ -57,7 +58,7 @@ Anno_df = param_dt[, -c(1:12)]
 Anum = ncol(Anno_df)
 A_temp = as.numeric(unlist(Anno_df)) %>% matrix(nrow = nrow(Anno_df))
 print(dim(A_temp)) # Number of SNPs in the row; Number of annotations in the column
-C0 = exp(-13.8)
+C0 = exp(avec_0)
 
 # gamma_A = gamma_temp * A_temp
 
@@ -65,13 +66,13 @@ C0 = exp(-13.8)
 ####### Solve for a_vec
 a_fn <- function(a) {
   Ata = A_temp %*% a
-  asum = sum(gamma_temp * Ata - log(1 + exp(Ata - 13.8))) - 0.5 * sum(a * a)
+  asum = sum(gamma_temp * Ata - log(1 + exp(Ata + avec_0))) - 0.5 * sum(a * a)
   return(-asum)
 }
 
 a_gr <- function(a) {
   Ata = A_temp %*% a
-  C0expAta = exp(Ata-13.8)
+  C0expAta = exp(Ata + avec_0)
   a_gr_sum = apply( ((gamma_temp - as.vector((C0expAta)/(1 + C0expAta))) * A_temp) , 2, sum) - a
   return( as.vector(-a_gr_sum) )
 }
@@ -79,7 +80,7 @@ a_gr <- function(a) {
 a_Hess <- function(a) {
   a_num = length(a)
   exp_Ata = exp(A_temp %*% a)
-  C0expAta = exp(Ata - 13.8)
+  C0expAta = exp(Ata + avec_0)
   a_Hess_sum = matrix(0, a_num, a_num)
   for (i in 1:nrow(A_temp)) {
     a_Hess_value = as.numeric( C0expAta[i] / ( 1 +  C0expAta[i] )^2 )  * outer(A_temp[i,], A_temp[i,])
@@ -90,8 +91,7 @@ a_Hess <- function(a) {
 }
 
 # avec_old = rep(0, 4)
-a_temp = optimx(avec_old, fn = a_fn, method='L-BFGS-B', gr = a_gr,
-              # hess = a_Hess,
+a_temp = optimx(avec_old, fn = a_fn, method='L-BFGS-B', gr = a_gr, # hess = a_Hess,
               hessian = TRUE, lower = c(rep(0, Anum))
               )
 # optimx(avec_old, fn = a_fn, method="Nelder-Mead", gr = a_gr)
@@ -136,10 +136,10 @@ CI_fish_tau_beta <- function(sum_gamma, sum_beta2, gwas_n, a, b){
 
 #tau_beta_temp = Est_tau_beta(sum_gamma, sum_beta2, gwas_n, a_gamma, b_gamma)
 tau_beta_temp = tau_beta_old
-print(c("Estimated tau_beta: ", tau_beta_temp))
+print(c("Fix tau_beta: ", tau_beta_temp))
 
 #####################################################
-hypmat <- data.table(`#hyper_parameter` = c("a", "tau_beta"), value = c(paste(c(-13.8, a_temp), collapse = ",") , tau_beta_temp))
+hypmat <- data.table(`#hyper_parameter` = c("a", "tau_beta"), value = c(paste(c(avec_0, a_temp), collapse = ",") , tau_beta_temp))
 
 ########## Write out updated hyper parameter values
 print("hyper parameter values updates after MCMC: ")

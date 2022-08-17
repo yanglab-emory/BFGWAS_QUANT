@@ -125,7 +125,8 @@ make
 * The same set of file heads as in the **genome block prefix file** should be used to name **VCF, Zscore, LD, Annotation files**.
 
 #### 2. Prior Parameter File
-- **Prior parameter file** includes the values of initial enrichment coefficients **`a`** (separated by `,`) and a fixed value for `tau_beta`. See example file as in ``./Example/ExData/hypval_4anno.txt`
+- **Prior parameter file** includes the values of initial enrichment coefficients **`a`** (separated by `,`) and a fixed value for `tau_beta`. See example file as in ``./Example/ExData/hypval_4anno.txt`. 
+- The first value in the **`a`** row is for `alpha_0` with a recomended value in `[-13.8, -9]`, which controls for the benchmark of model sparsity when enrichment parameters are `0` and will not be updated during M-step. 
 - Default `tau_beta` value is recommended to be set as `0.1` if individual-level GWAS data are used, and `1` if summary-level GWAS data are used.
 
 
