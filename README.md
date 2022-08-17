@@ -112,6 +112,7 @@ make
 #### 3. Annotation File
 - **Annotation files** are also segmented using the same segmentation information for segmenting **GWAS Zscore files** or **VCF files**, with names `Anno_[filehead].txt.gz`.
 - **Annotation files** are tab separated text files with 6 columns: `#CHROM POS ID REF ALT Annotation`, denoting chromosome number, base pair coordinate, variant ID, reference allele, alternative allele, multivariate quantitative annotations (separated by `,`).
+- **Enrichment parameters are restricted to be positive values.** We suggest users to code their interesting annotation features as positive values.
 
 	| #CHROM   | POS    | ID    | REF    | ALT    | Annotation   |
 	|-------------|-------------|-------------|-------------|-------------|-------------|	| 19    | 29791987 | 19:29791987:C:A | C |A | 0,0,0,-1.5646 |
