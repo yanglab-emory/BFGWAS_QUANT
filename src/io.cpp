@@ -1925,6 +1925,205 @@ bool ReadFile_vcf (const string &file_vcf, vector<bool> &indicator_idv, vector<b
     return true;
 }
 
+//Read VCF genotype file, the second time, no standardization, for writing genotype dosage file
+//meeting:matrix ni sample size ns snps, indicator vector snp,less
+bool ReadFile_vcf (const string &file_vcf, vector<bool> &indicator_idv, vector<bool> &indicator_snp, gsl_matrix *X, const uint ni_test, const uint ns_test, string &GTfield, const vector <size_t> &SampleVcfPos, const map<string, size_t> &PhenoID2Pos, const vector<string> &VcfSampleID)
+{
+    if (GTfield.empty()) {
+        GTfield = "GT"; //defalt load GT Data
+    }
+    int lkey = GTfield.size(); //length of the field-key string
+
+    // Open the VCF file.
+    igzstream infile(file_vcf.c_str(), igzstream::in);
+    //cout << "open vcf file second time ...\n";
+    if(!infile) {
+        std::cerr << "Unable to open " << file_vcf << "\n";
+        exit(-1);
+    }
+
+    gsl_vector *genotype=gsl_vector_alloc(ni_test);
+
+    double geno, geno_mean;
+    size_t n_miss, c_idv=0, c_snp=0, ctest_snp = 0, ctest_idv=0;
+   // int result;
+
+    char *pch, *p, *nch=NULL, *n;
+    size_t tab_count;
+    int GTpos=0, k=0;
+    string line, pheno_id;
+    size_t pheno_index;
+
+    //cout << "PhenoID2Pos.size() = " << PhenoID2Pos.size() << " before second vcf file loading... " << endl;
+//row by row
+    while(!safeGetline(infile, line).eof())
+    {
+        if (line[0] == '#') {
+            continue; //skip header
+        }
+        else {
+            if (!indicator_snp[c_snp]) {c_snp++; continue;}
+            c_idv=0; //increase to the total individuals ni_total
+            ctest_idv=0; // increase to the total analyzed individuals
+            geno_mean=0.0; n_miss=0;
+            vector<bool> genotype_miss(ni_test, 0);
+
+            pch= (char *)line.c_str();
+            for (tab_count=0; pch != NULL; tab_count++) {
+                nch=strchr(pch, '\t'); //point to the position of next '\t'
+
+                if ((tab_count == 8) && (c_idv == 0))
+                {
+                    // parse FORMAT field
+                    if (pch[0] == GTfield[0] && pch[1] == GTfield[1] && ((nch==pch+2)||pch[2]==':') ) {
+                        GTpos=0; //GT start in the first position
+                    }
+                    else if (nch == NULL){ cerr << "VCF has FORMAT field but dose not have any genotype\n";}
+                    else{
+                        k=0; //index of key characters
+                        GTpos=0;
+                        p=pch;
+                        while (p<nch) {
+                            if (*p == ':') {
+                                if (k >= lkey) {
+                                    break;
+                                }
+                                else {
+                                    ++GTpos;
+                                    k=0;
+                                }
+                            }
+                            else {
+                                if (GTfield[k] == *p) {
+                                    ++k;
+                                }
+                                else { k=0; }
+                            }
+                            ++p;
+                        }
+                        if ((p==nch) && (k != lkey)) {
+                            cerr << "Cannot find" << GTfield << endl;
+                            exit(-1);
+                        }
+                    }
+                }
+                else if ( tab_count == SampleVcfPos[ctest_idv] )
+                {
+
+                    pheno_id = VcfSampleID[c_idv];
+                    if (PhenoID2Pos.count(pheno_id) > 0){
+                            pheno_index = PhenoID2Pos.at(pheno_id);
+                    }
+                    else {
+                        cerr << "error: pheno ID matched error ... "<< endl;
+                        exit(-1);
+                    }
+
+                    if ( !indicator_idv[pheno_index] ) {
+                        cerr << "error: pheno is not in sample ... "<< endl;
+                        exit(-1);
+                        //continue;
+                    }
+                    else{
+                        p = pch; // make p reach to the key index
+                        if (GTpos>0) {
+                            for (int i=0; (i<GTpos) && (p!=NULL); ++i) {
+                                n = strchr(p, ':');
+                                p = (n == NULL) ? NULL : n+1;
+                            }
+                        }
+
+                        if (p==NULL) {
+                            geno = -9;//missing
+                        }
+                        else if ( (p[1] == '/') || (p[1] == '|') ) {
+                        //read bi-allelic GT
+                            if( (p[0]=='.') && (p[2]=='.')){
+                                geno = -9;//missing
+                            }
+                            else if ( (p[0]=='.') && (p[2]!='.')) {
+                                geno = (double)(p[2] -'0');
+                                if(geno != 1 && geno != 0){
+                                    geno = -9; // multi-allelic
+                                }
+                            }
+                            else if ((p[0]!='.') && p[2]=='.') {
+                                geno = (double)(p[0] -'0');
+                                if(geno != 1 && geno != 0){ geno = -9; } // multi-allelic
+                            }
+                            else {
+                                geno = (double)((p[0] - '0') + (p[2]- '0'));
+                                if(geno != 1 && geno != 0 && geno != 2){ geno = -9; } // multi-allelic
+                            }
+                        }
+                        else if ( GTfield != "GT" ){
+                            //read dosage data
+                            if( (p[0]=='.') && ( !isdigit(p[1]) ) ){
+                                geno = -9; // missing
+                            }else if (isdigit(p[0])){
+                                geno = strtod(p, NULL);
+                                if(geno < 0 || geno > 2) {geno = -9;} // invalid dosage
+                            }else{
+                                cerr << "dosage data is not a digit ... " << endl;
+                                exit(-1);
+                            }
+                        }else{
+                            geno = -9;
+                        }
+
+                        // Missing or multi-allelic
+                        if(geno == -9){
+                            genotype_miss[ctest_idv]=1;
+                            n_miss++; c_idv++; ctest_idv++;
+                            pch = (nch == NULL) ? NULL : nch+1;
+                            continue;
+                        }
+                        else if( (geno >= 0.0) && (geno <= 2.0))
+                            {geno_mean += geno;}
+                        else {
+                            cout << "ERROR: geno falls outside [0, 2]! " << geno <<";" << pheno_id << endl;
+                            exit(-1);
+                        }
+
+                        gsl_vector_set (genotype, ctest_idv, geno);
+                        ctest_idv++; // increase analyzed phenotype #
+                        c_idv++;
+                    }
+                }else if (tab_count >= 9 ){
+                    c_idv++;
+                }
+                pch = (nch == NULL) ? NULL : nch+1;
+            } // for tab_count
+        if(ni_test <= n_miss){
+            geno_mean = 0.0;
+        }else{
+            geno_mean/=(double)(ni_test-n_miss);
+            if(geno_mean < 0.0 || geno_mean > 2.0){
+                cout << "ERROR: geno_mean falls outside [0, 2]! \n ";
+                exit(-1);
+            }
+        }
+
+        // cout << "geno_mean = " << geno_mean << endl;
+        for (size_t i=0; i < ni_test; ++i) {
+                if (genotype_miss[i]) {geno=geno_mean; gsl_vector_set (genotype, i, geno);}
+            }
+        gsl_matrix_set_row(X, ctest_snp, genotype);
+        c_snp++;
+        ctest_snp++;
+        }
+    }
+    // cout << "ctest_snp = " << c_snp << "; ns_test = " << ns_test << endl;
+     //cout << "SNPmean size = " << SNPmean.size() << endl;
+    gsl_vector_free(genotype);
+    infile.clear();
+    infile.close();
+    //cout << "PhenoID2Pos.size() = " << PhenoID2Pos.size() << " after second vcf file loading... " << endl;
+    // cout << "Done reading vcf file second time for writing genotype dosage file ... \n" ;
+    return true;
+}
+
+
 
 //Read genotype dosage file, the second time, recode "mean" genotype and calculate K
 bool ReadFile_geno (const string &file_geno, const vector<bool> &indicator_idv, const vector<bool> &indicator_snp, gsl_matrix *X, gsl_matrix *K, const bool calc_K, const size_t ni_test, vector<double> &SNPmean, const vector <size_t> &SampleVcfPos, const map<string, size_t> &PhenoID2Pos, const vector<string> &VcfSampleID)

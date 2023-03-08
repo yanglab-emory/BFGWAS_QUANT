@@ -102,6 +102,8 @@ bool ReadFile_vcf (const string &file_vcf, const set<string> &setSnps, vector<bo
 
 bool ReadFile_vcf (const string &file_vcf, vector<bool> &indicator_idv, vector<bool> &indicator_snp, gsl_matrix *X, const uint ni_test, const uint ns_test, gsl_matrix *K, const bool calc_K, string &GTfield, vector<double> &SNPmean, const vector <size_t> &SampleVcfPos, const map<string, size_t> &PhenoID2Pos, const vector<string> &VcfSampleID); // second time
 
+bool ReadFile_vcf (const string &file_vcf, vector<bool> &indicator_idv, vector<bool> &indicator_snp, gsl_matrix *X, const uint ni_test, const uint ns_test, string &GTfield, const vector <size_t> &SampleVcfPos, const map<string, size_t> &PhenoID2Pos, const vector<string> &VcfSampleID); // second time for writing gentoype dosage file
+
 //for new model
 bool ReadFile_anno (const string &file_anno, vector<SNPINFO> &snpInfo, map<string, int> &mapID2num, vector<bool> &indicator_snp, size_t &Anum);
 //Empty Annotation for reading individual data

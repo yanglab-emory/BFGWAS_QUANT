@@ -675,16 +675,14 @@ void BFGWAS::BatchRun (PARAM &cPar)
         //square matrix? I want use ns_test snps as number of columns
         //sample/snp
         gsl_matrix *X_Genotype = gsl_matrix_alloc (cPar.ns_test, cPar.ni_test);
-        cPar.ReadGenotypes (X_Genotype, K); // read genotype data for the second time
-		cout << "success standardize vector";
-        cout << "Read genotype data for the second time and standardize genotype data. \n";
+        cPar.ReadGenotypes (X_Genotype); // read genotype data for the second time
         cout << "load genotype data cost " << (clock()-time_readfile)/(double(CLOCKS_PER_SEC)*60.0) << "mints\n";
         
         //lei note here
         cPar.WriteGenotypes(X_Genotype);
         gsl_matrix_free(K);
         gsl_vector_free(y);
-        cout << "Writting standardized genotype file success ... "<< endl;
+        cout << "Writting non-standardized genotype file success ... "<< endl;
         //exit(EXIT_SUCCESS);
     }
 

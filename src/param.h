@@ -296,6 +296,7 @@ public:
 	void CheckData ();
 	void PrintSummary ();
 	void ReadGenotypes (gsl_matrix *X, gsl_matrix *K);
+	void ReadGenotypes (gsl_matrix *X); //only for writing genotype dosage file
 	void WriteGenotypes(gsl_matrix *X);
 
 	// summary statistics;

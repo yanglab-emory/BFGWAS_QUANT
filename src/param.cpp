@@ -424,6 +424,20 @@ void PARAM::ReadGenotypes (gsl_matrix *X, gsl_matrix *K) {
 
 }
 
+// reading VCF file for writing genotype dosage file
+void PARAM::ReadGenotypes (gsl_matrix *X) {
+ 	cout << "\nStarting reading VCF file for the second time ...\n";
+    string file_str;
+	if(!file_vcf.empty()){
+    //if(!file_vcf.empty()){
+        if ( ReadFile_vcf (file_vcf, indicator_idv, indicator_snp, X, ni_test, ns_test, GTfield, SampleVcfPos, PhenoID2Pos, VcfSampleID)==false )
+        	{error=true;} // revised
+        else {cout << "Read VCF file for the second time success ...";}
+    }
+    return;
+}
+
+
 // Read summary statistics and load into cPar
 void PARAM::ReadSS (){
 	if( (! file_score.empty()) && (!file_corr.empty()) ){
@@ -458,7 +472,7 @@ void PARAM::WriteGenotypes(gsl_matrix *X){
 
 	string file_str;
     file_str="./output/"+file_out;
-    file_str+=".geno";
+    file_str+=".geno.txt";
 
     ofstream outfile (file_str.c_str(), ofstream::out);
     if (!outfile) {cout<<"error writing file: "<<file_str.c_str()<<endl; return;}
@@ -481,23 +495,20 @@ void PARAM::WriteGenotypes(gsl_matrix *X){
     //cout << "write variant information."<<endl;
     cout << "Test SNPs : " << ns_test << endl;
     cout << "snp_pos size : " << snp_pos.size() << endl;
- 	cout << "indicator_snp size : " << indicator_snp.size() << endl;
-
+ 	// cout << "indicator_snp size : " << indicator_snp.size() << endl;
     for (size_t i = 0; i< ns_test; ++i) {
     	// save the data
         outfile<< snp_pos[i].chr<<"\t" <<snp_pos[i].bp <<"\t"  << snp_pos[i].rs << "\t" << snp_pos[i].a_major << "\t" << snp_pos[i].a_minor << "\t";
         for (size_t j=0; j < ni_test; j++) {
-            geno_j = gsl_matrix_get(X, snp_pos[i].pos, snp_pos[j].pos);
+            geno_j = gsl_matrix_get(X, i, j);
             if (j == (ni_test-1))
                 outfile << fixed << setprecision(3)  << geno_j << endl;
             else
                 outfile << fixed << setprecision(3) << geno_j << "\t";
         }
     }
-
     outfile.clear();
     outfile.close();
-
 }
 
 
