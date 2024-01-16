@@ -65,7 +65,7 @@ Thumbs.db
 *.lai
 *.la
 *.a
-*.lib
+# *.lib
 
 # Executables
 *.exe
